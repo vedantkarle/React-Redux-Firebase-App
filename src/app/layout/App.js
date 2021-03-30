@@ -6,12 +6,28 @@ import "./styles.css";
 
 function App() {
   const [formOpen, setFormOpen] = useState(false);
+  const [selectedEvent, setSelectedEvent] = useState(null);
+
+  const handleSelectEvent = (event) => {
+    setSelectedEvent(event);
+    setFormOpen(true);
+  };
+
+  const handleCreateFromOpen = () => {
+    setSelectedEvent(null);
+    setFormOpen(true);
+  };
 
   return (
     <>
-      <Navbar setFormOpen={setFormOpen} />
+      <Navbar setFormOpen={handleCreateFromOpen} />
       <Container className="main">
-        <EventDashboard formOpen={formOpen} setFormOpen={setFormOpen} />
+        <EventDashboard
+          formOpen={formOpen}
+          setFormOpen={setFormOpen}
+          selectedEvent={selectedEvent}
+          selectEvent={handleSelectEvent}
+        />
       </Container>
     </>
   );
