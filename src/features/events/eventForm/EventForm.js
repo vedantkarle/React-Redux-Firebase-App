@@ -1,13 +1,16 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 import { Button, Form, Header, Input, Segment } from "semantic-ui-react";
 import cuid from "cuid";
+import { updateEvent, createEvent } from "../eventActions";
 
-const EventForm = ({
-  setFormOpen,
-  handleCreateEvent,
-  selectedEvent,
-  updateEvent,
-}) => {
+const EventForm = ({ match, history }) => {
+  const dispatch = useDispatch();
+  const selectedEvent = useSelector((state) =>
+    state.event.events.find((e) => e.id === match.params.id)
+  );
+
   const initialValues = selectedEvent ?? {
     title: "",
     category: "",
@@ -23,15 +26,18 @@ const EventForm = ({
     e.preventDefault();
 
     selectedEvent
-      ? updateEvent({ ...selectedEvent, ...values })
-      : handleCreateEvent({
-          ...values,
-          id: cuid(),
-          hostedBy: "Vedant",
-          attendees: [],
-          hostPhotoURL: "/assets/user.png",
-        });
-    setFormOpen(false);
+      ? dispatch(updateEvent({ ...selectedEvent, ...values }))
+      : dispatch(
+          createEvent({
+            ...values,
+            id: cuid(),
+            hostedBy: "Vedant",
+            attendees: [],
+            hostPhotoURL: "/assets/user.png",
+          })
+        );
+
+    history.push("/events");
   };
 
   const handleInputChange = (e) => {
@@ -99,10 +105,11 @@ const EventForm = ({
         </Form.Field>
         <Button type="submit" floated="right" positive content="Submit" />
         <Button
+          as={Link}
+          to="/events"
           type="submit"
           floated="right"
           content="Cancel"
-          onClick={() => setFormOpen(false)}
         />
       </Form>
     </Segment>
