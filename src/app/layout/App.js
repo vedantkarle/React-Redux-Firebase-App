@@ -8,6 +8,7 @@ import Navbar from "../../features/nav/Navbar";
 import "./styles.css";
 import EventForm from "../../features/events/eventForm/EventForm";
 import Sandbox from "../../features/sandbox/Sandbox";
+import ModalManager from "../common/modals/ModalManager";
 
 function App() {
   const { key } = useLocation();
@@ -19,6 +20,7 @@ function App() {
         path={"/(.+)"}
         render={() => (
           <>
+            <ModalManager />
             <Navbar />
             <Container className="main">
               <Route exact path="/" component={HomePage} />
