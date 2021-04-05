@@ -5,7 +5,7 @@ import ModalWrapper from "../../app/common/modals/ModalWrapper";
 import * as Yup from "yup";
 import MyTextInput from "../../app/common/form/MyTextInput";
 import { Button } from "semantic-ui-react";
-import { signInUser } from "../auth/authActions";
+import { signInWithEmail } from "../../app/firestore/firebaseService";
 import { closeModal } from "../../app/common/modals/modalReducer";
 
 const LoginForm = () => {
@@ -19,10 +19,14 @@ const LoginForm = () => {
           email: Yup.string().required().email(),
           password: Yup.string().required(),
         })}
-        onSubmit={(values, { setSubmitting }) => {
-          dispatch(signInUser(values));
-          setSubmitting(false);
-          dispatch(closeModal());
+        onSubmit={async (values, { setSubmitting }) => {
+          try {
+            await signInWithEmail(values);
+            setSubmitting(false);
+            dispatch(closeModal());
+          } catch (error) {
+            console.log(error);
+          }
         }}
       >
         {({ isSubmitting, dirty, isValid }) => (

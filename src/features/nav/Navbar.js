@@ -3,17 +3,21 @@ import { Button, Container, Menu } from "semantic-ui-react";
 import { NavLink, useHistory } from "react-router-dom";
 import SignedOutMenu from "./SignedOutMenu";
 import SignedInMenu from "./SignedInMenu";
-import { useDispatch, useSelector } from "react-redux";
-import { signOutUser } from "../auth/authActions";
+import { useSelector } from "react-redux";
+import { signOutFirebase } from "../../app/firestore/firebaseService";
+import { toast } from "react-toastify";
 
-const Navbar = ({ setFormOpen }) => {
+const Navbar = () => {
   const history = useHistory();
-  const dispatch = useDispatch();
   const { authenticated } = useSelector((state) => state.auth);
 
-  const handleSignOut = () => {
-    dispatch(signOutUser());
-    history.push("/");
+  const handleSignOut = async () => {
+    try {
+      await signOutFirebase();
+      history.push("/");
+    } catch (error) {
+      toast.error(error.message);
+    }
   };
 
   return (

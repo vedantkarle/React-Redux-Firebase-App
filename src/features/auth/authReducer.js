@@ -1,11 +1,8 @@
 import { SIGN_IN_USER, SIGN_OUT_USER } from "./authConstants";
 
 const initialState = {
-  authenticated: true,
-  currentUser: {
-    email: "karlevedant7@gmail.com",
-    photoURL: "/assets/user.png",
-  },
+  authenticated: false,
+  currentUser: null,
 };
 
 export default function authReducer(state = initialState, { type, payload }) {
@@ -14,10 +11,7 @@ export default function authReducer(state = initialState, { type, payload }) {
       return {
         ...state,
         authenticated: true,
-        currentUser: {
-          email: payload.email,
-          photoURL: "/assets/user.png",
-        },
+        currentUser: payload,
       };
     case SIGN_OUT_USER:
       return {
