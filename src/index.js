@@ -8,11 +8,8 @@ import "react-toastify/dist/ReactToastify.min.css";
 import "react-calendar/dist/Calendar.css";
 import App from "./app/layout/App";
 import ScrollToTop from "./app/layout/ScrollToTop";
-import { loadEvents } from "./features/events/eventActions";
 
 const store = configureStore();
-
-store.dispatch(loadEvents());
 
 ReactDOM.render(
   <Provider store={store}>
