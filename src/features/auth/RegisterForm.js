@@ -5,34 +5,36 @@ import ModalWrapper from "../../app/common/modals/ModalWrapper";
 import * as Yup from "yup";
 import MyTextInput from "../../app/common/form/MyTextInput";
 import { Button, Divider, Label } from "semantic-ui-react";
-import { signInWithEmail } from "../../app/firestore/firebaseService";
+import { registerInFirebase } from "../../app/firestore/firebaseService";
 import { closeModal } from "../../app/common/modals/modalReducer";
 import SocialLogin from "./SocialLogin";
 
-const LoginForm = () => {
+const RegisterForm = () => {
   const dispatch = useDispatch();
 
   return (
-    <ModalWrapper size="mini" header="Login in to Re-Vents">
+    <ModalWrapper size="mini" header="Register to Re-Vents">
       <Formik
-        initialValues={{ email: "", password: "" }}
+        initialValues={{ email: "", displayName: "", password: "" }}
         validationSchema={Yup.object({
           email: Yup.string().required().email(),
+          displayName: Yup.string().required(),
           password: Yup.string().required(),
         })}
         onSubmit={async (values, { setSubmitting, setErrors }) => {
           try {
-            await signInWithEmail(values);
+            await registerInFirebase(values);
             setSubmitting(false);
             dispatch(closeModal());
           } catch (error) {
-            setErrors({ auth: "Invalid Credentials" });
+            setErrors({ auth: error.message });
             setSubmitting(false);
           }
         }}
       >
         {({ isSubmitting, dirty, isValid, errors }) => (
           <Form className="ui form">
+            <MyTextInput name="displayName" placeholder="Display Name" />
             <MyTextInput name="email" placeholder="Email Address" />
             <MyTextInput
               name="password"
@@ -54,7 +56,7 @@ const LoginForm = () => {
               fluid
               size="large"
               color="teal"
-              content="Login"
+              content="Register"
             />
             <Divider horizontal>Or</Divider>
             <SocialLogin />
@@ -65,4 +67,4 @@ const LoginForm = () => {
   );
 };
 
-export default LoginForm;
+export default RegisterForm;
