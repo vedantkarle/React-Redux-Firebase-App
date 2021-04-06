@@ -33,7 +33,7 @@ const useFirestoreDoc = ({
         data(dataFromSnapshot(snapshot));
         dispatch(asyncActionFinish());
       },
-      (error) => dispatch(asyncActionError())
+      (error) => dispatch(asyncActionError(error.message))
     );
     return () => {
       unsubscribe();

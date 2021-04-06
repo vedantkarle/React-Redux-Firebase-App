@@ -39,8 +39,6 @@ export async function socialLogin(selectedProvider) {
   try {
     const res = await firebase.auth().signInWithPopup(provider);
 
-    console.log(res);
-
     if (res.additionalUserInfo.isNewUser) {
       await setUserProfileData(res.user);
     }

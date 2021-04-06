@@ -6,6 +6,7 @@ import modalReducer from "../common/modals/modalReducer";
 import authReducer from "../../features/auth/authReducer";
 import thunk from "redux-thunk";
 import asyncReducer from "../async/asyncReducer";
+import profileReducer from "../../features/profile/profileReducer";
 import { verifyAuth } from "../../features/auth/authActions";
 
 const reducer = combineReducers({
@@ -14,6 +15,7 @@ const reducer = combineReducers({
   modals: modalReducer,
   auth: authReducer,
   async: asyncReducer,
+  profile: profileReducer,
 });
 
 export function configureStore() {

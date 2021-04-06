@@ -4,16 +4,16 @@ import { Link } from "react-router-dom";
 import { Dropdown, Image, Menu } from "semantic-ui-react";
 
 const SignedInMenu = ({ signOut }) => {
-  const { currentUser } = useSelector((state) => state.auth);
+  const { currentUserProfile } = useSelector((state) => state.profile);
 
   return (
     <Menu.Item position="right">
       <Image
         avatar
         spaced="right"
-        src={currentUser.photoURL || "/assets/user.png"}
+        src={currentUserProfile.photoURL || "/assets/user.png"}
       />
-      <Dropdown pointing="top left" text={currentUser.displayName}>
+      <Dropdown pointing="top left" text={currentUserProfile.displayName}>
         <Dropdown.Menu>
           <Dropdown.Item
             as={Link}
@@ -23,9 +23,15 @@ const SignedInMenu = ({ signOut }) => {
           />
           <Dropdown.Item
             as={Link}
-            to="/profile"
+            to={`/profile/${currentUserProfile.id}`}
             text="My Profile"
             icon="user"
+          />
+          <Dropdown.Item
+            as={Link}
+            to="/account"
+            text="My Account"
+            icon="settings"
           />
           <Dropdown.Item onClick={signOut} text="Sign Out" icon="power" />
         </Dropdown.Menu>
