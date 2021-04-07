@@ -87,3 +87,5 @@ export async function updateUserProfile(profile) {
     throw error;
   }
 }
+
+export async function updateUserProfilePhoto(downloadURL, fileName) {}
