@@ -19,14 +19,14 @@ const EventDashboard = () => {
     ])
   );
 
-  const handleSetPredicate = (key, value) => {
+  function handleSetPredicate(key, value) {
     setPredicate(new Map(predicate.set(key, value)));
-  };
+  }
 
   useFirestoreCollection({
-    query: () => listenToEventsFromFirestore(),
+    query: () => listenToEventsFromFirestore(predicate),
     data: (events) => dispatch(listenToEvents(events)),
-    dependencies: [dispatch],
+    dependencies: [dispatch, predicate],
   });
 
   return (

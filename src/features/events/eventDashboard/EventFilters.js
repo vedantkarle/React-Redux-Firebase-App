@@ -21,21 +21,17 @@ const EventFilters = ({ predicate, setPredicate, loading }) => {
         />
         <Menu.Item
           disabled={loading}
-          active={predicate.get("filter") === "isHosting"}
-          onClick={() => setPredicate("filter", "isHosting")}
+          active={predicate.get("filter") === "isHost"}
+          onClick={() => setPredicate("filter", "isHost")}
           content="I'm hosting"
         />
       </Menu>
-      <Header
-        icon="calendar"
-        attached
-        color="teal"
-        content="Select Date"
+      <Header icon="calendar" attached color="teal" content="Select Date" />
+      <Calendar
         onChange={(date) => setPredicate("startDate", date)}
         value={predicate.get("startDate") || new Date()}
-        titleDisabled={() => loading}
+        tileDisabled={() => loading}
       />
-      <Calendar />
     </>
   );
 };
