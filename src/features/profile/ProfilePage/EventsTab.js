@@ -38,7 +38,7 @@ const EventsTab = ({ profile }) => {
             menu={{ secondary: true, pointing: true }}
             loading={loading}
           />
-          {!profileEvents.length ? (
+          {!profileEvents?.length ? (
             <Header content="No Events" textAlign="center" />
           ) : (
             <Card.Group itemsPerRow={5} style={{ marginTop: 10 }}>
