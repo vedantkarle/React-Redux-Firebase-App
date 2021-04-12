@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { Comment, Header, Segment } from "semantic-ui-react";
+import { createDataTree } from "../../../app/common/utils/utils";
 import {
   firebaseObjectToArray,
   getEventChatRef,
@@ -52,7 +53,7 @@ const EventDetailedChat = ({ eventId }) => {
       <Segment attached>
         <EventDetailedChatForm eventId={eventId} parentId={0} />
         <Comment.Group>
-          {comments.map((comment) => {
+          {createDataTree(comments).map((comment) => {
             return (
               <Comment key={comment.id}>
                 <Comment.Avatar src={comment.photoURL || "/assets/user.png"} />
@@ -95,6 +96,62 @@ const EventDetailedChat = ({ eventId }) => {
                       )}
                   </Comment.Actions>
                 </Comment.Content>
+                {comment.childNodes.length > 0 && (
+                  <Comment.Group>
+                    {comment.childNodes.reverse().map((child) => (
+                      <Comment key={child.id}>
+                        <Comment.Avatar
+                          src={child.photoURL || "/assets/user.png"}
+                        />
+                        <Comment.Content>
+                          <Comment.Author
+                            as={Link}
+                            to={`/profile/${child.uid}`}
+                          >
+                            {child.displayName}
+                          </Comment.Author>
+                          <Comment.Metadata>
+                            <div>
+                              {" "}
+                              {formatDistance(child.date, new Date())}{" "}
+                            </div>
+                          </Comment.Metadata>
+                          <Comment.Text>
+                            {child.text.split("\n").map((text, i) => (
+                              <span key={i}>
+                                {text}
+                                <br />
+                              </span>
+                            ))}
+                          </Comment.Text>
+                          <Comment.Actions>
+                            <Comment.Action
+                              onClick={() =>
+                                setShowReplyForm({
+                                  open: !showReplyForm.open,
+                                  commentId: child.id,
+                                })
+                              }
+                            >
+                              {showReplyForm.open &&
+                              showReplyForm.commentId === child.id
+                                ? "Cancel"
+                                : "Reply"}
+                            </Comment.Action>
+                            {showReplyForm.open &&
+                              showReplyForm.commentId === child.id && (
+                                <EventDetailedChatForm
+                                  eventId={eventId}
+                                  parentId={child.parentId}
+                                  closeForm={handleCloseReplyForm}
+                                />
+                              )}
+                          </Comment.Actions>
+                        </Comment.Content>
+                      </Comment>
+                    ))}
+                  </Comment.Group>
+                )}
               </Comment>
             );
           })}
